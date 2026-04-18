@@ -1,0 +1,1443 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>X12: Neon Shadows MMORPG</title>
+
+    <style>
+
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap');
+
+        
+
+        * {
+
+            margin: 0;
+
+            padding: 0;
+
+            box-sizing: border-box;
+
+        }
+
+        
+
+        body {
+
+            background: linear-gradient(135deg, #0A0014 0%, #050920 100%);
+
+            color: #00FFFF;
+
+            font-family: 'Exo 2', sans-serif;
+
+            min-height: 100vh;
+
+            overflow: hidden;
+
+            position: relative;
+
+        }
+
+        
+
+        /* Grid background */
+
+        body::before {
+
+            content: '';
+
+            position: absolute;
+
+            top: 0;
+
+            left: 0;
+
+            width: 100%;
+
+            height: 100%;
+
+            background-image: 
+
+                linear-gradient(rgba(0, 255, 255, 0.05) 1px, transparent 1px),
+
+                linear-gradient(90deg, rgba(0, 255, 255, 0.05) 1px, transparent 1px);
+
+            background-size: 30px 30px;
+
+            z-index: -1;
+
+        }
+
+        
+
+        .game-container {
+
+            display: flex;
+
+            height: 100vh;
+
+            padding: 10px;
+
+            gap: 10px;
+
+        }
+
+        
+
+        /* Left Panel - Character & Stats */
+
+        .left-panel {
+
+            width: 300px;
+
+            background: rgba(16, 32, 64, 0.7);
+
+            border: 1px solid #00FFFF;
+
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+
+            padding: 15px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 15px;
+
+        }
+
+        
+
+        /* Center Panel - Game World */
+
+        .center-panel {
+
+            flex: 1;
+
+            background: rgba(16, 32, 64, 0.7);
+
+            border: 1px solid #00FFFF;
+
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+
+            position: relative;
+
+            overflow: hidden;
+
+        }
+
+        
+
+        /* Right Panel - Chat & Quests */
+
+        .right-panel {
+
+            width: 300px;
+
+            background: rgba(16, 32, 64, 0.7);
+
+            border: 1px solid #00FFFF;
+
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+
+            padding: 15px;
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 15px;
+
+        }
+
+        
+
+        .panel-header {
+
+            font-family: 'Orbitron', monospace;
+
+            font-size: 18px;
+
+            font-weight: 700;
+
+            color: #FF00FF;
+
+            text-shadow: 0 0 10px #FF00FF;
+
+            padding-bottom: 10px;
+
+            border-bottom: 1px solid #00FFFF;
+
+            margin-bottom: 10px;
+
+        }
+
+        
+
+        .character-card {
+
+            background: rgba(0, 0, 0, 0.5);
+
+            border: 1px solid #00FFFF;
+
+            padding: 15px;
+
+            border-radius: 5px;
+
+        }
+
+        
+
+        .character-name {
+
+            font-family: 'Orbitron', monospace;
+
+            font-size: 20px;
+
+            color: #FF00FF;
+
+            text-shadow: 0 0 5px #FF00FF;
+
+            margin-bottom: 10px;
+
+        }
+
+        
+
+        .character-image {
+
+            width: 100%;
+
+            height: 150px;
+
+            background: linear-gradient(45deg, #0A0014, #1a0030);
+
+            border: 1px solid #00FFFF;
+
+            margin-bottom: 10px;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            font-size: 60px;
+
+        }
+
+        
+
+        .stats {
+
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 10px;
+
+        }
+
+        
+
+        .stat {
+
+            background: rgba(0, 255, 255, 0.1);
+
+            padding: 8px;
+
+            border-radius: 3px;
+
+            font-size: 14px;
+
+        }
+
+        
+
+        .stat-value {
+
+            float: right;
+
+            color: #39FF14;
+
+        }
+
+        
+
+        .progress-bar {
+
+            height: 8px;
+
+            background: rgba(0, 255, 255, 0.2);
+
+            border-radius: 4px;
+
+            margin-top: 5px;
+
+            overflow: hidden;
+
+        }
+
+        
+
+        .progress {
+
+            height: 100%;
+
+            border-radius: 4px;
+
+        }
+
+        
+
+        .health-progress {
+
+            background: linear-gradient(90deg, #FF00FF, #00FFFF);
+
+            width: 85%;
+
+        }
+
+        
+
+        .energy-progress {
+
+            background: linear-gradient(90deg, #39FF14, #00FFFF);
+
+            width: 70%;
+
+        }
+
+        
+
+        .xp-progress {
+
+            background: linear-gradient(90deg, #FFAA00, #FF00FF);
+
+            width: 45%;
+
+        }
+
+        
+
+        .skills {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 10px;
+
+            margin-top: 10px;
+
+        }
+
+        
+
+        .skill {
+
+            background: rgba(0, 255, 255, 0.1);
+
+            padding: 5px 10px;
+
+            border-radius: 3px;
+
+            font-size: 12px;
+
+            cursor: pointer;
+
+        }
+
+        
+
+        .skill:hover {
+
+            background: rgba(0, 255, 255, 0.3);
+
+        }
+
+        
+
+        /* Game World */
+
+        #game-world {
+
+            width: 100%;
+
+            height: 100%;
+
+            position: relative;
+
+            background: linear-gradient(180deg, #050920 0%, #0A0014 100%);
+
+            overflow: hidden;
+
+        }
+
+        
+
+        .map-grid {
+
+            position: absolute;
+
+            top: 0;
+
+            left: 0;
+
+            width: 100%;
+
+            height: 100%;
+
+            background-image: 
+
+                linear-gradient(rgba(0, 255, 255, 0.03) 1px, transparent 1px),
+
+                linear-gradient(90deg, rgba(0, 255, 255, 0.03) 1px, transparent 1px);
+
+            background-size: 50px 50px;
+
+        }
+
+        
+
+        .player {
+
+            position: absolute;
+
+            width: 40px;
+
+            height: 40px;
+
+            border-radius: 50%;
+
+            background: #FF00FF;
+
+            box-shadow: 0 0 15px #FF00FF;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            color: white;
+
+            font-weight: bold;
+
+            z-index: 10;
+
+            transition: all 0.3s ease;
+
+        }
+
+        
+
+        .npc {
+
+            position: absolute;
+
+            width: 35px;
+
+            height: 35px;
+
+            border-radius: 50%;
+
+            background: #00FFFF;
+
+            box-shadow: 0 0 10px #00FFFF;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            color: white;
+
+            font-size: 12px;
+
+            z-index: 5;
+
+        }
+
+        
+
+        .enemy {
+
+            position: absolute;
+
+            width: 35px;
+
+            height: 35px;
+
+            border-radius: 50%;
+
+            background: #FF5E00;
+
+            box-shadow: 0 0 10px #FF5E00;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            color: white;
+
+            font-size: 12px;
+
+            z-index: 5;
+
+        }
+
+        
+
+        .building {
+
+            position: absolute;
+
+            background: rgba(16, 32, 64, 0.8);
+
+            border: 1px solid #00FFFF;
+
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            color: #00FFFF;
+
+            font-size: 12px;
+
+            z-index: 2;
+
+        }
+
+        
+
+        .chat-container {
+
+            flex: 1;
+
+            background: rgba(0, 0, 0, 0.5);
+
+            border: 1px solid #00FFFF;
+
+            border-radius: 5px;
+
+            padding: 10px;
+
+            display: flex;
+
+            flex-direction: column;
+
+        }
+
+        
+
+        .chat-messages {
+
+            flex: 1;
+
+            overflow-y: auto;
+
+            margin-bottom: 10px;
+
+            font-size: 14px;
+
+        }
+
+        
+
+        .chat-input {
+
+            background: rgba(0, 255, 255, 0.1);
+
+            border: 1px solid #00FFFF;
+
+            color: #00FFFF;
+
+            padding: 8px;
+
+            border-radius: 3px;
+
+            font-family: 'Exo 2', sans-serif;
+
+        }
+
+        
+
+        .quest-log {
+
+            flex: 1;
+
+            background: rgba(0, 0, 0, 0.5);
+
+            border: 1px solid #00FFFF;
+
+            border-radius: 5px;
+
+            padding: 10px;
+
+            overflow-y: auto;
+
+        }
+
+        
+
+        .quest {
+
+            background: rgba(0, 255, 255, 0.1);
+
+            padding: 10px;
+
+            margin-bottom: 10px;
+
+            border-radius: 3px;
+
+            font-size: 14px;
+
+        }
+
+        
+
+        .quest-title {
+
+            color: #FF00FF;
+
+            font-weight: bold;
+
+            margin-bottom: 5px;
+
+        }
+
+        
+
+        .controls {
+
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            gap: 10px;
+
+            margin-top: 10px;
+
+        }
+
+        
+
+        .control-btn {
+
+            padding: 10px;
+
+            background: rgba(0, 255, 255, 0.1);
+
+            border: 1px solid #00FFFF;
+
+            color: #00FFFF;
+
+            font-family: 'Exo 2', sans-serif;
+
+            cursor: pointer;
+
+            border-radius: 3px;
+
+            text-align: center;
+
+        }
+
+        
+
+        .control-btn:hover {
+
+            background: rgba(0, 255, 255, 0.3);
+
+        }
+
+        
+
+        .notification {
+
+            position: fixed;
+
+            top: 20px;
+
+            right: 20px;
+
+            background: rgba(16, 32, 64, 0.9);
+
+            border: 1px solid #FF00FF;
+
+            padding: 15px;
+
+            border-radius: 5px;
+
+            box-shadow: 0 0 15px #FF00FF;
+
+            z-index: 100;
+
+            animation: slideIn 0.5s ease;
+
+        }
+
+        
+
+        @keyframes slideIn {
+
+            from { transform: translateX(100%); opacity: 0; }
+
+            to { transform: translateX(0); opacity: 1; }
+
+        }
+
+        
+
+        .glitch {
+
+            animation: glitch-effect 0.5s infinite;
+
+        }
+
+        
+
+        @keyframes glitch-effect {
+
+            0% { transform: translate(0); }
+
+            20% { transform: translate(-2px, 2px); }
+
+            40% { transform: translate(-2px, -2px); }
+
+            60% { transform: translate(2px, 2px); }
+
+            80% { transform: translate(2px, -2px); }
+
+            100% { transform: translate(0); }
+
+        }
+
+        
+
+        /* Mobile responsiveness */
+
+        @media (max-width: 1200px) {
+
+            .game-container {
+
+                flex-direction: column;
+
+                height: auto;
+
+            }
+
+            
+
+            .left-panel, .right-panel {
+
+                width: 100%;
+
+                height: 250px;
+
+            }
+
+            
+
+            .center-panel {
+
+                height: 500px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="game-container">
+
+        <!-- Left Panel - Character & Stats -->
+
+        <div class="left-panel">
+
+            <div class="panel-header">CHARACTER PROFILE</div>
+
+            <div class="character-card">
+
+                <div class="character-name" id="character-name">ULTIMA</div>
+
+                <div class="character-image">⚡</div>
+
+                <div class="stats">
+
+                    <div class="stat">
+
+                        LEVEL: <span class="stat-value" id="level">12</span>
+
+                    </div>
+
+                    <div class="stat">
+
+                        HEALTH: <span class="stat-value" id="health">850/1000</span>
+
+                        <div class="progress-bar">
+
+                            <div class="progress health-progress"></div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="stat">
+
+                        ENERGY: <span class="stat-value" id="energy">700/1000</span>
+
+                        <div class="progress-bar">
+
+                            <div class="progress energy-progress"></div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="stat">
+
+                        XP: <span class="stat-value" id="xp">4500/10000</span>
+
+                        <div class="progress-bar">
+
+                            <div class="progress xp-progress"></div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="skills">
+
+                    <div class="skill">HACKING</div>
+
+                    <div class="skill">COMBAT</div>
+
+                    <div class="skill">STEALTH</div>
+
+                    <div class="skill">ENGINEERING</div>
+
+                </div>
+
+            </div>
+
+            
+
+            <div class="panel-header">INVENTORY</div>
+
+            <div class="character-card">
+
+                <div class="stats">
+
+                    <div class="stat">Credits: <span class="stat-value">12,450</span></div>
+
+                    <div class="stat">Neural Interface: <span class="stat-value">MK III</span></div>
+
+                    <div class="stat">Cyberware: <span class="stat-value">87%</span></div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        
+
+        <!-- Center Panel - Game World -->
+
+        <div class="center-panel">
+
+            <div id="game-world">
+
+                <div class="map-grid"></div>
+
+                <!-- Game elements will be added by JavaScript -->
+
+            </div>
+
+        </div>
+
+        
+
+        <!-- Right Panel - Chat & Quests -->
+
+        <div class="right-panel">
+
+            <div class="panel-header">MULTIPLAYER CHAT</div>
+
+            <div class="chat-container">
+
+                <div class="chat-messages" id="chat-messages">
+
+                    <div>> SYSTEM: Welcome to X12: Neon Shadows</div>
+
+                    <div>> SYSTEM: 12 players online in Neo-Tokyo sector</div>
+
+                    <div>> SHADOW_WALKER: Anyone up for a data heist?</div>
+
+                    <div>> CYBER_KITTEN: I need backup at the power plant!</div>
+
+                    <div>> NEON_SAMURAI: Just unlocked the Overload ability!</div>
+
+                </div>
+
+                <input type="text" class="chat-input" id="chat-input" placeholder="Type your message...">
+
+            </div>
+
+            
+
+            <div class="panel-header">ACTIVE QUESTS</div>
+
+            <div class="quest-log">
+
+                <div class="quest">
+
+                    <div class="quest-title">Main Quest: Restore Power Grid</div>
+
+                    <div>Connect 12 alien power nodes to stabilize the city</div>
+
+                    <div>Progress: <span id="main-quest-progress">4/12 nodes</span></div>
+
+                </div>
+
+                <div class="quest">
+
+                    <div class="quest-title">Side Quest: Data Retrieval</div>
+
+                    <div>Hack into the corporate database</div>
+
+                    <div>Reward: 5,000 credits</div>
+
+                </div>
+
+                <div class="quest">
+
+                    <div class="quest-title">Bounty: Rogue AI</div>
+
+                    <div>Eliminate the rogue AI in the server farm</div>
+
+                    <div>Difficulty: HIGH</div>
+
+                </div>
+
+            </div>
+
+            
+
+            <div class="controls">
+
+                <div class="control-btn" id="move-btn">MOVE</div>
+
+                <div class="control-btn" id="action-btn">ACTION</div>
+
+                <div class="control-btn" id="inventory-btn">INVENTORY</div>
+
+                <div class="control-btn" id="map-btn">MAP</div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="notification" id="notification" style="display: none;">
+
+        <div>New Quest Available!</div>
+
+    </div>
+
+
+
+    <script>
+
+        // Game State
+
+        const gameState = {
+
+            player: {
+
+                x: 450,
+
+                y: 250,
+
+                level: 12,
+
+                health: 850,
+
+                maxHealth: 1000,
+
+                energy: 700,
+
+                maxEnergy: 1000,
+
+                xp: 4500,
+
+                maxXp: 10000,
+
+                credits: 12450
+
+            },
+
+            npcs: [
+
+                { id: 1, x: 200, y: 150, type: 'quest', name: 'Q' },
+
+                { id: 2, x: 600, y: 400, type: 'vendor', name: 'V' },
+
+                { id: 3, x: 300, y: 350, type: 'trainer', name: 'T' }
+
+            ],
+
+            enemies: [
+
+                { id: 1, x: 700, y: 200, type: 'drone', name: 'D' },
+
+                { id: 2, x: 150, y: 400, type: 'guard', name: 'G' },
+
+                { id: 3, x: 500, y: 100, type: 'drone', name: 'D' }
+
+            ],
+
+            buildings: [
+
+                { x: 100, y: 100, width: 150, height: 100, name: 'POWER STATION' },
+
+                { x: 650, y: 300, width: 120, height: 120, name: 'DATA HUB' },
+
+                { x: 300, y: 50, width: 100, height: 80, name: 'OUTPOST' }
+
+            ],
+
+            otherPlayers: [
+
+                { id: 1, x: 350, y: 200, name: 'S' },
+
+                { id: 2, x: 500, y: 300, name: 'C' },
+
+                { id: 3, x: 200, y: 300, name: 'N' }
+
+            ]
+
+        };
+
+
+
+        // Initialize the game world
+
+        function initGameWorld() {
+
+            const gameWorld = document.getElementById('game-world');
+
+            
+
+            // Create buildings
+
+            gameState.buildings.forEach(building => {
+
+                const buildingEl = document.createElement('div');
+
+                buildingEl.className = 'building';
+
+                buildingEl.style.left = `${building.x}px`;
+
+                buildingEl.style.top = `${building.y}px`;
+
+                buildingEl.style.width = `${building.width}px`;
+
+                buildingEl.style.height = `${building.height}px`;
+
+                buildingEl.textContent = building.name;
+
+                gameWorld.appendChild(buildingEl);
+
+            });
+
+            
+
+            // Create NPCs
+
+            gameState.npcs.forEach(npc => {
+
+                const npcEl = document.createElement('div');
+
+                npcEl.className = 'npc';
+
+                npcEl.style.left = `${npc.x}px`;
+
+                npcEl.style.top = `${npc.y}px`;
+
+                npcEl.textContent = npc.name;
+
+                gameWorld.appendChild(npcEl);
+
+            });
+
+            
+
+            // Create enemies
+
+            gameState.enemies.forEach(enemy => {
+
+                const enemyEl = document.createElement('div');
+
+                enemyEl.className = 'enemy';
+
+                enemyEl.style.left = `${enemy.x}px`;
+
+                enemyEl.style.top = `${enemy.y}px`;
+
+                enemyEl.textContent = enemy.name;
+
+                gameWorld.appendChild(enemyEl);
+
+            });
+
+            
+
+            // Create other players
+
+            gameState.otherPlayers.forEach(player => {
+
+                const playerEl = document.createElement('div');
+
+                playerEl.className = 'player';
+
+                playerEl.style.left = `${player.x}px`;
+
+                playerEl.style.top = `${player.y}px`;
+
+                playerEl.textContent = player.name;
+
+                gameWorld.appendChild(playerEl);
+
+            });
+
+            
+
+            // Create main player
+
+            const playerEl = document.createElement('div');
+
+            playerEl.className = 'player';
+
+            playerEl.id = 'main-player';
+
+            playerEl.style.left = `${gameState.player.x}px`;
+
+            playerEl.style.top = `${gameState.player.y}px`;
+
+            playerEl.textContent = 'U';
+
+            gameWorld.appendChild(playerEl);
+
+            
+
+            // Add click event to move player
+
+            gameWorld.addEventListener('click', function(e) {
+
+                const rect = gameWorld.getBoundingClientRect();
+
+                const x = e.clientX - rect.left;
+
+                const y = e.clientY - rect.top;
+
+                
+
+                movePlayer(x, y);
+
+            });
+
+        }
+
+
+
+        // Move player to new position
+
+        function movePlayer(x, y) {
+
+            const playerEl = document.getElementById('main-player');
+
+            gameState.player.x = x - 20;
+
+            gameState.player.y = y - 20;
+
+            
+
+            playerEl.style.left = `${gameState.player.x}px`;
+
+            playerEl.style.top = `${gameState.player.y}px`;
+
+            
+
+            // Check for interactions
+
+            checkInteractions(x, y);
+
+        }
+
+
+
+        // Check for interactions with NPCs, enemies, etc.
+
+        function checkInteractions(x, y) {
+
+            // Check NPC interactions
+
+            gameState.npcs.forEach(npc => {
+
+                const distance = Math.sqrt(Math.pow(npc.x - x, 2) + Math.pow(npc.y - y, 2));
+
+                if (distance < 50) {
+
+                    showNotification(`Interacting with ${npc.type.toUpperCase()}`);
+
+                    // In a full game, this would open a dialog or menu
+
+                }
+
+            });
+
+            
+
+            // Check enemy interactions
+
+            gameState.enemies.forEach(enemy => {
+
+                const distance = Math.sqrt(Math.pow(enemy.x - x, 2) + Math.pow(enemy.y - y, 2));
+
+                if (distance < 50) {
+
+                    showNotification(`Enemy encountered! Prepare for combat.`);
+
+                    // In a full game, this would initiate combat
+
+                }
+
+            });
+
+        }
+
+
+
+        // Show notification
+
+        function showNotification(message) {
+
+            const notification = document.getElementById('notification');
+
+            notification.innerHTML = `<div>${message}</div>`;
+
+            notification.style.display = 'block';
+
+            
+
+            setTimeout(() => {
+
+                notification.style.display = 'none';
+
+            }, 3000);
+
+        }
+
+
+
+        // Update UI with current stats
+
+        function updateUI() {
+
+            document.getElementById('level').textContent = gameState.player.level;
+
+            document.getElementById('health').textContent = `${gameState.player.health}/${gameState.player.maxHealth}`;
+
+            document.getElementById('energy').textContent = `${gameState.player.energy}/${gameState.player.maxEnergy}`;
+
+            document.getElementById('xp').textContent = `${gameState.player.xp}/${gameState.player.maxXp}`;
+
+            
+
+            // Update progress bars
+
+            document.querySelector('.health-progress').style.width = `${(gameState.player.health / gameState.player.maxHealth) * 100}%`;
+
+            document.querySelector('.energy-progress').style.width = `${(gameState.player.energy / gameState.player.maxEnergy) * 100}%`;
+
+            document.querySelector('.xp-progress').style.width = `${(gameState.player.xp / gameState.player.maxXp) * 100}%`;
+
+        }
+
+
+
+        // Chat functionality
+
+        document.getElementById('chat-input').addEventListener('keypress', function(e) {
+
+            if (e.key === 'Enter') {
+
+                const message = this.value;
+
+                if (message.trim() !== '') {
+
+                    const chatMessages = document.getElementById('chat-messages');
+
+                    chatMessages.innerHTML += `<div>> ULTIMA: ${message}</div>`;
+
+                    this.value = '';
+
+                    
+
+                    // Auto-scroll to bottom
+
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+
+                    
+
+                    // Simulate other players responding (in a real game, this would come from a server)
+
+                    if (message.toLowerCase().includes('help')) {
+
+                        setTimeout(() => {
+
+                            chatMessages.innerHTML += `<div>> CYBER_KITTEN: I can assist with that!</div>`;
+
+                            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+                        }, 1000);
+
+                    }
+
+                }
+
+            }
+
+        });
+
+
+
+        // Control button functionality
+
+        document.getElementById('move-btn').addEventListener('click', function() {
+
+            showNotification('Movement mode activated. Click anywhere to move.');
+
+        });
+
+
+
+        document.getElementById('action-btn').addEventListener('click', function() {
+
+            showNotification('Action menu opened.');
+
+        });
+
+
+
+        document.getElementById('inventory-btn').addEventListener('click', function() {
+
+            showNotification('Inventory accessed.');
+
+        });
+
+
+
+        document.getElementById('map-btn').addEventListener('click', function() {
+
+            showNotification('City map displayed.');
+
+        });
+
+
+
+        // Initialize the game
+
+        window.onload = function() {
+
+            initGameWorld();
+
+            updateUI();
+
+            
+
+            // Simulate game events
+
+            setInterval(() => {
+
+                // Randomly move other players
+
+                gameState.otherPlayers.forEach(player => {
+
+                    if (Math.random() > 0.7) {
+
+                        player.x += (Math.random() * 100 - 50);
+
+                        player.y += (Math.random() * 100 - 50);
+
+                        
+
+                        // Keep players in bounds
+
+                        player.x = Math.max(20, Math.min(880, player.x));
+
+                        player.y = Math.max(20, Math.min(480, player.y));
+
+                        
+
+                        // Update player element
+
+                        const playerEl = document.querySelector(`.player:not(#main-player)`);
+
+                        if (playerEl) {
+
+                            playerEl.style.left = `${player.x}px`;
+
+                            playerEl.style.top = `${player.y}px`;
+
+                        }
+
+                    }
+
+                });
+
+            }, 2000);
+
+            
+
+            // Simulate quest progress
+
+            setTimeout(() => {
+
+                document.getElementById('main-quest-progress').textContent = '5/12 nodes';
+
+                showNotification('Quest Updated: Power Grid Restoration');
+
+            }, 5000);
+
+        };
+
+    </script>
+
+</body>
+
+</html>
